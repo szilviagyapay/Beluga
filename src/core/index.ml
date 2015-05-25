@@ -215,7 +215,7 @@ and shunting_yard (l : Ext.LF.normal list) : Ext.LF.normal =
       ((o.Store.OpPragmas.assoc = None && !Store.OpPragmas.default = Ext.Sgn.Left) ||
        o.Store.OpPragmas.assoc = Some Ext.Sgn.Left))
  *)  in
-  let rec normalListToSpine : Ext.LF.normal list -> Ext.LF.spine = function
+  let rec normalListToSpine : Ext.LF.normal list -> Ext.LF.head (* Ext.LF.normal list -> Ext.LF.spine *) = function
     | [] -> Ext.LF.Nil
     | h::t -> Ext.LF.App(locOfNormal h, h, normalListToSpine t)
   in

@@ -148,8 +148,8 @@ module Ext : sig
     val fmt_ppr_lf_typ        : LF.mctx -> LF.dctx -> lvl -> formatter -> LF.typ    -> unit
     val fmt_ppr_lf_normal     : LF.mctx -> LF.dctx -> lvl -> formatter -> LF.normal -> unit
     val fmt_ppr_lf_head       : LF.mctx -> LF.dctx -> lvl -> formatter -> LF.head   -> unit
-    val fmt_ppr_lf_spine      : LF.mctx -> LF.dctx -> lvl -> formatter -> LF.spine  -> unit
-    val fmt_ppr_lf_sub        : LF.mctx -> LF.dctx -> lvl -> formatter -> LF.sub    -> unit
+    (* val fmt_ppr_lf_spine      : LF.mctx -> LF.dctx -> lvl -> formatter -> LF.head  -> unit (* LF.mctx -> LF.dctx -> lvl -> formatter -> LF.spine  -> unit *) *)
+    (* val fmt_ppr_lf_sub        : LF.mctx -> LF.dctx -> lvl -> formatter -> LF.head    -> unit (* LF.mctx -> LF.dctx -> lvl -> formatter -> LF.sub    -> unit *) *)
 
     val fmt_ppr_lf_schema     : lvl -> formatter -> LF.schema     -> unit
     val fmt_ppr_lf_sch_elem   : lvl -> formatter -> LF.sch_elem   -> unit
@@ -176,8 +176,8 @@ module Ext : sig
     val ppr_lf_typ        : LF.mctx -> LF.dctx -> LF.typ     -> unit
     val ppr_lf_normal     : LF.mctx -> LF.dctx -> LF.normal  -> unit
     val ppr_lf_head       : LF.mctx -> LF.dctx -> LF.head    -> unit
-    val ppr_lf_spine      : LF.mctx -> LF.dctx -> LF.spine   -> unit
-    val ppr_lf_sub        : LF.mctx -> LF.dctx -> LF.sub     -> unit
+    (* val ppr_lf_spine      : LF.mctx -> LF.dctx -> LF.head   -> unit (* LF.mctx -> LF.dctx -> LF.spine   -> unit *) *)
+    (* val ppr_lf_sub        : LF.mctx -> LF.dctx -> LF.head    -> unit (* LF.mctx -> LF.dctx -> LF.sub     -> unit *) *)
 
     val ppr_lf_schema     : LF.schema        -> unit
     val ppr_lf_sch_elem   : LF.sch_elem      -> unit
@@ -193,8 +193,8 @@ module Ext : sig
     val ppr_cmp_branch    : LF.ctyp_decl LF.ctx -> Comp.branch -> unit
 
     (* Conversion to string *)
-    val subToString       : LF.mctx -> LF.dctx -> LF.sub      -> string
-    val spineToString     : LF.ctyp_decl LF.ctx -> LF.dctx -> LF.spine -> string
+    val subToString       : LF.mctx -> LF.dctx -> LF.head     -> string (* LF.mctx -> LF.dctx -> LF.sub      -> string *)
+    val spineToString     : LF.ctyp_decl LF.ctx -> LF.dctx -> LF.head -> string (* LF.ctyp_decl LF.ctx -> LF.dctx -> LF.spine -> string *)
     val typToString       : LF.ctyp_decl LF.ctx -> LF.dctx -> LF.typ -> string
     val typRecToString    : LF.ctyp_decl LF.ctx -> LF.dctx -> LF.typ_rec -> string
     val kindToString      : LF.dctx -> LF.kind -> string

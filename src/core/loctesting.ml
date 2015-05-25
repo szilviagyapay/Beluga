@@ -78,17 +78,24 @@ and store_normal (norm : LF.normal) = match norm with
 | LF.Root (loc, h, s) -> 
 	Locs.add loc (Locs.mk_entry ("Root"));
 	store_head h;
-	store_spine s;
+	store_head s;(*store_spine s;*)
 | _ -> ();
 
 and store_head (h : LF.head) = match h with
 | LF.Name (loc, n) -> Locs.add loc (Locs.mk_entry ("Name " ^ R.render_name n))
 | LF.MVar (loc, n, _) -> Locs.add loc (Locs.mk_entry ("MVar " ^ R.render_name n))
+(* Spine *)
+| LF.Nil -> ()
+| LF.App (loc, norm, s') ->
+	Locs.add loc (Locs.mk_entry ("App"));
+	store_normal norm;
+	store_head s'(*store_spine s'*)
 | _ -> ();
 
-and store_spine (s : LF.spine) = match s with
+(* and store_spine (s : LF.head (* LF.spine *)) = match s with
 | LF.Nil -> ()
 | LF.App (loc, norm, s') ->
 	Locs.add loc (Locs.mk_entry ("App"));
 	store_normal norm;
 	store_spine s'
+ *)

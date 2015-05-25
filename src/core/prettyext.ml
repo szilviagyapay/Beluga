@@ -48,8 +48,8 @@ module Ext = struct
     val fmt_ppr_lf_typ        : LF.mctx -> LF.dctx -> lvl -> formatter -> LF.typ    -> unit
     val fmt_ppr_lf_normal     : LF.mctx -> LF.dctx -> lvl -> formatter -> LF.normal -> unit
     val fmt_ppr_lf_head       : LF.mctx -> LF.dctx -> lvl -> formatter -> LF.head   -> unit
-    val fmt_ppr_lf_spine      : LF.mctx -> LF.dctx -> lvl -> formatter -> LF.spine  -> unit
-    val fmt_ppr_lf_sub        : LF.mctx -> LF.dctx -> lvl -> formatter -> LF.sub    -> unit
+   (* val fmt_ppr_lf_spine      : LF.mctx -> LF.dctx -> lvl -> formatter -> LF.head  -> unit (* LF.mctx -> LF.dctx -> lvl -> formatter -> LF.spine  -> unit *) *)
+  (*  val fmt_ppr_lf_sub        : LF.mctx -> LF.dctx -> lvl -> formatter -> LF.head    -> unit (* LF.mctx -> LF.dctx -> lvl -> formatter -> LF.sub    -> unit *) *)
 
     val fmt_ppr_lf_schema     : lvl -> formatter -> LF.schema     -> unit
     val fmt_ppr_lf_sch_elem   : lvl -> formatter -> LF.sch_elem   -> unit
@@ -76,8 +76,8 @@ module Ext = struct
     val ppr_lf_typ        : LF.mctx -> LF.dctx -> LF.typ     -> unit
     val ppr_lf_normal     : LF.mctx -> LF.dctx -> LF.normal  -> unit
     val ppr_lf_head       : LF.mctx -> LF.dctx -> LF.head    -> unit
-    val ppr_lf_spine      : LF.mctx -> LF.dctx -> LF.spine   -> unit
-    val ppr_lf_sub        : LF.mctx -> LF.dctx -> LF.sub     -> unit
+    (* val ppr_lf_spine      : LF.mctx -> LF.dctx -> LF.head   -> unit (* LF.mctx -> LF.dctx -> LF.spine   -> unit *)*)
+    (* val ppr_lf_sub        : LF.mctx -> LF.dctx -> LF.head    -> unit (* LF.mctx -> LF.dctx -> LF.sub     -> unit *)*)
 
     val ppr_lf_schema     : LF.schema        -> unit
     val ppr_lf_sch_elem   : LF.sch_elem      -> unit
@@ -93,8 +93,8 @@ module Ext = struct
     val ppr_cmp_branch    : LF.ctyp_decl LF.ctx -> Comp.branch -> unit
 
     (* Conversion to string *)
-    val subToString       : LF.mctx -> LF.dctx -> LF.sub      -> string
-    val spineToString     : LF.ctyp_decl LF.ctx -> LF.dctx -> LF.spine -> string
+    val subToString       : LF.mctx -> LF.dctx -> LF.head     -> string (* LF.mctx -> LF.dctx -> LF.sub      -> string *)
+    val spineToString     : LF.ctyp_decl LF.ctx -> LF.dctx -> LF.head -> string (* LF.ctyp_decl LF.ctx -> LF.dctx -> LF.spine -> string *)
     val typToString       : LF.ctyp_decl LF.ctx -> LF.dctx -> LF.typ -> string
     val typRecToString    : LF.ctyp_decl LF.ctx -> LF.dctx -> LF.typ_rec -> string
     val kindToString      : LF.dctx -> LF.kind -> string
@@ -204,7 +204,7 @@ module Ext = struct
             fprintf ppf "%s%s%a%s"
               (l_paren_if cond)
               (to_html name Link)
-              (fmt_ppr_lf_spine cD cPsi 2) ms
+              (fmt_ppr_lf_head cD cPsi 2) ms (* (fmt_ppr_lf_spine cD cPsi 2) ms *)
               (r_paren_if cond)
       | LF.PiTyp (_,LF.TypDecl (x, a), (LF.ArrTyp _ as b)) ->
           let cond = lvl > 1 in
@@ -298,7 +298,7 @@ module Ext = struct
               fprintf ppf "%s%a%a%s"
                 (l_paren_if cond)
                 (fmt_ppr_lf_head cD cPsi lvl) h
-                (fmt_ppr_lf_spine cD cPsi 2)  ms
+                (fmt_ppr_lf_head cD cPsi 2)  ms (* (fmt_ppr_lf_spine cD cPsi 2)  ms *)
                 (r_paren_if cond)
 
         | LF.LFHole _ -> 
@@ -325,7 +325,7 @@ module Ext = struct
           fprintf ppf "%s%s%a%s"
             (l_paren_if (paren s))
             (R.render_name x)
-            (fmt_ppr_lf_sub  cD cPsi lvl) s
+            (fmt_ppr_lf_head  cD cPsi lvl) s (* (fmt_ppr_lf_sub  cD cPsi lvl) s *)
             (r_paren_if (paren s))
 
       (* | LF.SVar (_, x, s) -> *)
@@ -339,7 +339,7 @@ module Ext = struct
           fprintf ppf "%s#%s%a%s"
             (l_paren_if (paren s))
             (R.render_name x)
-            (fmt_ppr_lf_sub  cD cPsi lvl) s
+            (fmt_ppr_lf_head cD cPsi lvl) s (*  (fmt_ppr_lf_sub  cD cPsi lvl) s *)
             (r_paren_if (paren s))
 
       | LF.Name(_, x) ->
@@ -353,24 +353,37 @@ module Ext = struct
 	fprintf ppf "%a.%a"
 	(fmt_ppr_lf_head cD cPsi lvl) h
 	(fmt_ppr_lf_proj lvl) p
-      end
-    and fmt_ppr_lf_proj lvl ppf = function
-      | LF.ByName n -> fprintf ppf "%s" (R.render_name n)
-      | LF.ByPos k -> fprintf ppf "%d" k
-
-    and fmt_ppr_lf_spine cD cPsi lvl ppf = function
+	(* Spine *)
       | LF.Nil ->
           fprintf ppf ""
 
       | LF.App (_, m, ms) ->
           fprintf ppf " %a%a"
             (fmt_ppr_lf_normal  cD cPsi (lvl + 1)) m
-            (fmt_ppr_lf_spine   cD cPsi lvl) ms
+            (fmt_ppr_lf_head   cD cPsi lvl) ms (* (fmt_ppr_lf_spine   cD cPsi lvl) ms *)
+	(* Sub *)
+      | _ -> match !Control.substitutionStyle with
+        | Control.Natural -> fmt_ppr_lf_sub_natural cD cPsi lvl ppf head
+        | Control.DeBruijn -> fmt_ppr_lf_sub_deBruijn cD cPsi lvl ppf head
+      end
 
-    and fmt_ppr_lf_sub cD cPsi lvl ppf s =
+    and fmt_ppr_lf_proj lvl ppf = function
+      | LF.ByName n -> fprintf ppf "%s" (R.render_name n)
+      | LF.ByPos k -> fprintf ppf "%d" k
+
+(*    and fmt_ppr_lf_spine cD cPsi lvl ppf = function
+      | LF.Nil ->
+          fprintf ppf ""
+
+      | LF.App (_, m, ms) ->
+          fprintf ppf " %a%a"
+            (fmt_ppr_lf_normal  cD cPsi (lvl + 1)) m
+            (fmt_ppr_lf_spine   cD cPsi lvl) ms *)
+
+  (*  and fmt_ppr_lf_sub cD cPsi lvl ppf s =
       match !Control.substitutionStyle with
         | Control.Natural -> fmt_ppr_lf_sub_natural cD cPsi lvl ppf s
-        | Control.DeBruijn -> fmt_ppr_lf_sub_deBruijn cD cPsi lvl ppf s
+        | Control.DeBruijn -> fmt_ppr_lf_sub_deBruijn cD cPsi lvl ppf s *)
 
     and fmt_ppr_lf_sub_natural cD cPsi lvl ppf s=
       let print_front = fmt_ppr_lf_front cD cPsi 1 in
@@ -664,7 +677,7 @@ module Ext = struct
             fprintf ppf "[%a %s %a]"
                (fmt_ppr_lf_dctx cD 0) cPsi
                (symbol_to_html Turnstile)
-              (fmt_ppr_lf_sub cD cPsi 0) tM
+               (fmt_ppr_lf_head cD cPsi 0) tM (* (fmt_ppr_lf_sub cD cPsi 0) tM *)
       | Comp.MetaParam (_, phat, h) ->
           let cPsi = phatToDCtx phat in
             fprintf ppf "[%a %s %a]"
@@ -1182,8 +1195,8 @@ module Ext = struct
     let ppr_lf_typ  cD cPsi    = fmt_ppr_lf_typ cD cPsi     std_lvl std_formatter
     let ppr_lf_normal cD cPsi  = fmt_ppr_lf_normal cD cPsi  std_lvl std_formatter
     let ppr_lf_head cD cPsi    = fmt_ppr_lf_head cD cPsi    std_lvl std_formatter
-    let ppr_lf_spine cD cPsi   = fmt_ppr_lf_spine cD cPsi   std_lvl std_formatter
-    let ppr_lf_sub cD cPsi     = fmt_ppr_lf_sub cD cPsi     std_lvl std_formatter
+    (*let ppr_lf_spine cD cPsi   = fmt_ppr_lf_head cD cPsi   std_lvl std_formatter  (* fmt_ppr_lf_spine cD cPsi   std_lvl std_formatter *)*)
+    (* let ppr_lf_sub cD cPsi     = fmt_ppr_lf_head cD cPsi     std_lvl std_formatter   (* fmt_ppr_lf_sub cD cPsi     std_lvl std_formatter *)*)
 
     let ppr_lf_schema          = fmt_ppr_lf_schema             std_lvl std_formatter
     let ppr_lf_sch_elem        = fmt_ppr_lf_sch_elem           std_lvl std_formatter
@@ -1200,11 +1213,11 @@ module Ext = struct
     let ppr_cmp_branch cD      = fmt_ppr_cmp_branch cD      std_lvl std_formatter
 
     let subToString cD cPsi s'  =
-        fmt_ppr_lf_sub cD cPsi std_lvl str_formatter s'
+        fmt_ppr_lf_head cD cPsi std_lvl str_formatter s' (* fmt_ppr_lf_sub cD cPsi std_lvl str_formatter s' *)
         ; flush_str_formatter ()
 
     let spineToString cD cPsi sS  =
-        fmt_ppr_lf_spine cD cPsi std_lvl str_formatter sS
+        fmt_ppr_lf_head cD cPsi std_lvl str_formatter sS (* fmt_ppr_lf_spine cD cPsi std_lvl str_formatter sS *)
         ; flush_str_formatter ()
 
     let typToString cD cPsi sA    =

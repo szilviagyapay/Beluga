@@ -71,7 +71,7 @@ type pair_or_atom_pat =
 
 
 type term_or_sub =
-  | Sub of LF.sub
+  | Sub of LF.head (* LF.sub *)
   | Term of LF.normal
 
 type clf_pattern =
@@ -93,7 +93,7 @@ type mixtyp =
   | MTPiBox of Loc.t * LF.ctyp_decl * mixtyp
 (* -bp Pi-types should not occur in computation-level types
   |  MTPiTyp of Loc.t * LF.typ_decl * mixtyp *)
-  | MTAtom of Loc.t * Id.name * LF.spine
+  | MTAtom of Loc.t * Id.name * LF.head (* Loc.t * Id.name * LF.spine *)
   | MTAtomTerm of Loc.t * LF.normal
 
 

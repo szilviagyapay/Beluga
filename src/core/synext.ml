@@ -39,7 +39,7 @@ module LF = struct
     | DeclOpt of name
 
   and typ =
-    | Atom   of Loc.t * name * spine
+    | Atom   of Loc.t * name * head (* Loc.t * name * spine *)
     | ArrTyp of Loc.t * typ      * typ
     | PiTyp  of Loc.t * typ_decl * typ
     | Sigma of Loc.t * typ_rec
@@ -48,7 +48,7 @@ module LF = struct
 
   and normal =
     | Lam  of Loc.t * name * normal
-    | Root of Loc.t * head * spine
+    | Root of Loc.t * head * head (* Loc.t * head * spine *)
     | Tuple of Loc.t * tuple
     | LFHole of Loc.t
     | Ann of Loc.t * normal * typ
@@ -57,25 +57,23 @@ module LF = struct
 
   and head =
     | Name  of Loc.t * name
-    | MVar  of Loc.t * name * sub
+    | MVar  of Loc.t * name * head (* Loc.t * name * sub *)
     | Hole  of Loc.t
-    | PVar  of Loc.t * name * sub
+    | PVar  of Loc.t * name * head (* Loc.t * name * sub *)
     | Proj  of Loc.t * head * proj
+    (* Spine *)
+    | Nil
+    | App of Loc.t * normal * head (* Loc.t * normal * spine *)		       	
+    (* Sub *)
+    | EmptySub of Loc.t
+    | Dot      of Loc.t * head * front (* Loc.t * sub * front *)
+    | Id       of Loc.t
+    | RealId
+    | SVar     of Loc.t * name * head (* Loc.t * name * sub *)  (* this needs to be be then turned into a subst. *)
 
   and proj = 
     | ByPos of int
     | ByName of name
-
-  and spine =
-    | Nil
-    | App of Loc.t * normal * spine
-
-  and sub =
-    | EmptySub of Loc.t
-    | Dot      of Loc.t * sub * front
-    | Id       of Loc.t
-    | RealId
-    | SVar     of Loc.t * name * sub  (* this needs to be be then turned into a subst. *)
 
   and front =
     | Head     of head
@@ -117,7 +115,7 @@ module Comp = struct
    | MetaCtx of Loc.t * LF.dctx
    | MetaObjAnn of Loc.t * LF.dctx * LF.normal
    | MetaParam of Loc.t * LF.dctx * LF.head
-   | MetaSObjAnn of Loc.t * LF.dctx * LF.sub
+   | MetaSObjAnn of Loc.t * LF.dctx * LF.head (* Loc.t * LF.dctx * LF.sub *)
 
  type meta_spine =
    | MetaNil
