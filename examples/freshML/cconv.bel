@@ -26,7 +26,7 @@ econs:  term -> env -> env.
 
 schema tctx =  term  ;
 
-rec genTVar :(g:tctx){#p:[g |- term]} [g |- env] -> [arg':target, xve:target |-  target] =
+rec genTVar :(g:tctx){#p:[g |- # term]} [g |- env] -> [arg':target, xve:target |-  target] =
 / total env (genTVar g p env) /
 mlam #p => fn env => case env  of
 | [g |- enil] => [arg':target, xve |-  tfst xve]

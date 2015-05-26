@@ -13,7 +13,7 @@ inductive Nat : ctype =
 
 schema ctx = term;
 
-rec pos_v : {g:ctx}{#p:[g |- term]} [|- nat] = 
+rec pos_v : {g:ctx}{#p:[g |- # term]} [|- nat] = 
 / total v (pos_v g v) /
 mlam g, #p => case [g |- #p[..]] of 
 | [g,y:term |- y] => [|- z]
@@ -30,7 +30,7 @@ fn l => case l of
 | [g |- lam \x. M] => pos [g, x:term |- M]
 ;
 
-rec pos' :{g:ctx}{#p:[g |- term]} Nat =
+rec pos' :{g:ctx}{#p:[g |- # term]} Nat =
 / total m (pos' _ m) /
 mlam g,#p => case [g |- #p[..]] of
 | [g,y:term |- y] => Z

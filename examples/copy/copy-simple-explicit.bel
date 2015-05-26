@@ -14,7 +14,7 @@ rec copy : {g:tctx} [g |- term] -> [g |- term] =
 / total e (copy g e) /
 mlam g => fn e =>
  (case e of
-    {#p:[g |- term]}
+    {#p:[g |- # term]}
      [g |- (#p[..])] : [g |- term] => [g |- (#p[..])]
 
   | {U:[g, x : term |-  term]}

@@ -22,7 +22,7 @@ rec f : {g:w} [g |- nat] -> [g |- nat] =
 rec f : {g:w} [g |- nat] -> [g |- nat] =
   mlam g => fn e =>
     case e of  %not
-     {#p:[g |- block (x:nat, _t:nat)]}
+     {#p:[g |- # block (x:nat, _t:nat)]}
       [g |- #p.1[..]] => [g |- #p.2[..]]
 ;
 }%

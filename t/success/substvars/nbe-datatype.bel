@@ -39,7 +39,7 @@ inductive SemSubst : {g:tctx}{h:ctx} ctype =
 | Nil : SemSubst [] [h]
 | Dot : SemSubst [g] [h] -> Sem [h] [ |- A] -> SemSubst [g,x:tm A[]] [h];
 
-rec lookup : {#p:[g |- tm A[]]} SemSubst [g] [h] -> Sem [h] [ |- A] =
+rec lookup : {#p:[g |- # tm A[]]} SemSubst [g] [h] -> Sem [h] [ |- A] =
 mlam #p => fn s => let s : SemSubst [g] [h] = s in case [g |- #p[..]] of
 | [g',x:tm T |-  x] => let Dot s' e = s in e
 | [g',x:tm T |-  #q[..]] => let Dot s' e = s in lookup [g' |-  #q[..]] s'

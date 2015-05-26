@@ -671,7 +671,7 @@ GLOBAL: sgn;
       [
         "{"; hash = "#"; p = SYMBOL; ":";
 
-         "["; cPsi = clf_dctx; turnstile; tA = clf_typ LEVEL "atomic";  "]"; "}"; ind = OPT ["*"] ->
+         "["; cPsi = clf_dctx; turnstile; "#"; tA = clf_typ LEVEL "atomic";  "]"; "}"; ind = OPT ["*"] ->
 	   let dep = match ind with None -> LF.No | Some _  -> LF.Inductive in
            LF.Decl(Id.mk_name (Id.SomeString p), (_loc,LF.ClTyp (LF.PTyp tA, cPsi)), dep)
 

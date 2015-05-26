@@ -75,7 +75,7 @@ inductive RedSub : {g:ctx}{#S:[ |- g]} ctype =
 ;
 
 
-rec lookup : {g:ctx}{#p:[g |- tm A[]]}RedSub [g] [ |- #S[^]] -> Reduce [|- A] [ |- #p[#S[^]]] =
+rec lookup : {g:ctx}{#p:[g |- # tm A[]]}RedSub [g] [ |- #S[^]] -> Reduce [|- A] [ |- #p[#S[^]]] =
  / total p (lookup g a s p) /
 mlam g => mlam #p => case [g |- #p[..]] of
  | [g',x:tm A |-  x] =>   ? % fn rs => let (Dot rs' rN) = rs in rN

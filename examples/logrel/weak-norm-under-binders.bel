@@ -20,7 +20,7 @@ refl : mstep M M.
 trans : mstep M M' -> mstep M' M'' -> mstep M M''.
 
 inductive IsVar : (g:ctx){M:[g |- tm A]} ctype =
-| IsVar : {#p:[g |- tm A]} IsVar [g |- #p[..]];
+| IsVar : {#p:[g |- # tm A]} IsVar [g |- #p[..]];
 
 inductive IsVarSub : {g:ctx} (h:ctx) {#S: [h |- g]}ctype =
 | Nil : IsVarSub [] [h |- ^ ]
@@ -133,7 +133,7 @@ fn rs => fn iv => case rs of
 | Nil => Nil
 | Dot rs' rN => Dot (wknRedSub rs' iv) (wknRed rN iv);
 
-rec redVar : {g:ctx}{#p:[g |- tm T[]]} RedSub [g] [h |- #S[..]] ->  Reduce [ |- T] [h |- #p[#S] ] =
+rec redVar : {g:ctx}{#p:[g |- # tm T[]]} RedSub [g] [h |- #S[..]] ->  Reduce [ |- T] [h |- #p[#S] ] =
 mlam g => mlam #p => fn rs => case [g |- #p[..]] of
 | [g',x:tm A |-  x] =>    let Dot rs' rN = rs in rN
 | [g',x:tm A |-  #q[..]] => let Dot rs' rN = rs in redVar [g'] [g' |-  #q[..]] rs';

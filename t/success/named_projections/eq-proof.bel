@@ -57,7 +57,7 @@ rec trans: {g:eqCtx}
     fn e1 => fn e2 =>
       case e1 of
 
-|{#p : [g |- block yy:exp, _t:eq yy yy]}
+|{#p : [g |- # block yy:exp, _t:eq yy yy]}
        [g |- #p._t[..]] => e2
 
 | [g |- eq_lam \x.\u. D1 u] =>

@@ -17,7 +17,7 @@ inductive Ctx_xaR : {phi:xG} {psi: xaG} {#S: [psi |- phi]} ctype =
 ;
 
 rec ctx_membership :
-          {#p: [phi  |-  tm] }
+          {#p: [phi  |- # tm] }
           Ctx_xaR [phi] [psi] [ psi |- #S[..] ] ->
           [psi |-  aeq #p[#S] #p[#S]] =
 mlam #p => fn cr =>  let (cr : Ctx_xaR [phi] [psi] [ psi |- #S[..] ]) = cr  in
@@ -91,7 +91,7 @@ inductive Eq : {phi:xG}{psi:xaG}{#S: [psi |- phi]} [phi |- tm] -> [psi |- tm] ->
 
 
 rec ctx_member :
-          {#p: [phi  |-  tm] }
+          {#p: [phi  |- # tm] }
           Ctx_xaR [phi] [psi] [ psi |- #S[..] ] ->
           EqV [phi] [psi] [ psi |- #S[..] ]  [phi |- #p[..]] [psi |-  M[..]] ->
           [psi |-  aeq (M[..]) (M[..])] =
@@ -267,11 +267,11 @@ inductive ExistsEq' : {gamma:xG}{phi: xdG}{#S :[phi |- gamma]} {L: [phi |- tm]} 
 -> ExistsEq' [gamma] [phi] [phi |- #T[..] ] [phi |-  Ld[..]]
 
 | ExistsEqV' :
-    {#p:[gamma |- tm]} EqV' [gamma] [phi] [phi |- #T[..]] [gamma |-  #p[..]] [phi |-  #q.1[..]]
+    {#p:[gamma |- # tm]} EqV' [gamma] [phi] [phi |- #T[..]] [gamma |-  #p[..]] [phi |-  #q.1[..]]
 -> ExistsEq' [gamma] [phi] [phi |- #T[..] ] [phi |-  #q.1[..]]
 ;
 
-rec existsEqV' : Ctx_xdR [gamma] [phi] [phi |- #T[..]] -> {#p: [phi |- block (x:tm, u:deq x x) ]}
+rec existsEqV' : Ctx_xdR [gamma] [phi] [phi |- #T[..]] -> {#p: [phi |- # block (x:tm, u:deq x x) ]}
                  ExistsEq' [gamma] [phi] [phi |- #T[..]]  [phi |-  #p.1[..]] =
 fn cr_xd => mlam #p => let (cr_xd : Ctx_xdR [gamma] [phi] [phi |- #T[..] ] ) = cr_xd in
 case [phi |-  #p.1[..]] of
@@ -317,7 +317,7 @@ inductive ExistsEq : {gamma:xG}{psi: xaG}{#S :[psi |- gamma]} {L: [gamma |- tm]}
 -> ExistsEq [gamma] [psi] [psi |- #S[..] ] [gamma |-  L[..]]
 ;
 
-rec existsEqV : Ctx_xaR [gamma] [psi] [psi |- #S[..]] -> {#p: [gamma |- tm]}
+rec existsEqV : Ctx_xaR [gamma] [psi] [psi |- #S[..]] -> {#p: [gamma |- # tm]}
                  ExistsEq [gamma] [psi] [psi |- #S[..]]  [gamma |-  #p[..]] =
 fn cr_xa => mlam #p => let (cr_xa : Ctx_xaR [gamma] [psi] [psi |- #S[..] ] ) = cr_xa in
 case [gamma |-  #p[..]] of

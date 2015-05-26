@@ -75,7 +75,7 @@ rec trans: {g:w}       %   {TT::exp[g]} {RR::exp[g]} {SS::exp[g]}
   mlam g =>
     fn e1 => fn e2 =>
       case e1 of
-      | {#p : [g |- block yy:exp, _t:eq yy yy]}
+      | {#p : [g |- # block yy:exp, _t:eq yy yy]}
          [g |- #p.2[..]] => e2
 
       | [g |- eq_lam \x.\u. D1] =>

@@ -128,7 +128,7 @@ module FVNatExplicit = struct
     | [g |- tt]           : [g |- (exp bool)]  => [g |- nothing]
     | [g |- ff]           : [g |- (exp bool)]  => [g |- nothing]
 
-   | {T':[ |- tp]} {#p:[g |- exp T'[]]}
+   | {T':[ |- tp]} {#p:[g |- # exp T'[]]}
       [g |- (#p[..])]     : [g |- (exp T'[])] => [g |- something T'[] (#p[..])]
 
     | {U:[g |- exp nat]}

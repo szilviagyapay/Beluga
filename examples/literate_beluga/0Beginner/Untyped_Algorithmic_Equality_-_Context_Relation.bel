@@ -69,7 +69,7 @@ inductive Eq : {phi:xG}{psi:xaG}{#S:[psi |- phi]} [phi |- tm] -> [psi |- tm] -> 
 The recursive function <code>refl</code> of type <code>{phi:xG}{M: [phi |-  tm]} Ctx_xaR [phi] [psi] [ psi |- #S[..] ] -> [psi |-  aeq (M #S[..]) (M #S[..])]</code>:  for all contexts <code>phi</code> and <code>psi</code> that have schema <code>xG</code> and <code>xaG</code>, respectively, if we have a substitution <code>#S</code> s.t. <code>#S:[psi |- phi]</code> then for all terms <code>M</code> depending on <code>phi</code>, we have a proof that <code>[ psi |- aeq (#p #S[..]) (#p #S[..])]</code>." Since the term <code>M</code> depends only on the context <code>phi</code>, it is explicitly weakened through applying <code>#S</code> to move it to the context <code>psi</code>.}}%
 
 rec ctx_membership :
-          {#p: [phi |-  tm] }
+          {#p: [phi |- # tm] }
           Ctx_xaR [phi] [psi] [ psi |- #S[..] ] ->
           [psi |-  aeq #p[#S] #p[#S]] =
 mlam #p => fn cr => let (cr : Ctx_xaR [phi] [psi] [ psi |- #S[..] ]) = cr in
@@ -116,7 +116,7 @@ Following we generalize reasoning about terms which contain substitution variabl
 <h3>Proof of Reflexivity, Expanded</h3>}}%
 
 rec ctx_member :
-          {#p: [phi |-  tm] }
+          {#p: [phi |- # tm] }
           Ctx_xaR [phi] [psi] [ psi |- #S[..] ] ->
           EqV [phi] [psi] [ psi |- #S[..] ] [phi |- #p[..]] [psi |-  M[..]] ->
           [psi |-  aeq (M[..]) (M[..])] =
@@ -288,11 +288,11 @@ inductive ExistsEq' : {gamma:xG}{phi: xdG}{#S : [phi |- gamma]} {L: [phi |- tm]}
 -> ExistsEq' [gamma] [phi] [phi |- #T[..] ] [phi |-  Ld[..]]
 
 | ExistsEqV' :
-    {#p:[gamma |- tm]} EqV' [gamma] [phi] [phi |- #T[..]] [gamma |- #p[..]] [phi |-  #q.1[..]]
+    {#p:[gamma |- # tm]} EqV' [gamma] [phi] [phi |- #T[..]] [gamma |- #p[..]] [phi |-  #q.1[..]]
 -> ExistsEq' [gamma] [phi] [phi |- #T[..] ] [phi |-  #q.1[..]]
 ;
 
-rec existsEqV' : Ctx_xdR [gamma] [phi] [phi |- #T[..]] -> {#p: [phi |- block (x:tm, u:deq x x) ]}
+rec existsEqV' : Ctx_xdR [gamma] [phi] [phi |- #T[..]] -> {#p: [phi |- # block (x:tm, u:deq x x) ]}
                  ExistsEq' [gamma] [phi] [phi |- #T[..]] [phi |-  #p.1[..]] =
 fn cr_xd => mlam #p => let (cr_xd : Ctx_xdR [gamma] [phi] [phi |- #T[..] ] ) = cr_xd in
 case [phi |-  #p.1[..]] of
@@ -338,7 +338,7 @@ inductive ExistsEq : {gamma:xG}{psi: xaG}{#S : [psi |- gamma]} {L: [gamma |- tm]
 -> ExistsEq [gamma] [psi] [psi |- #S[..] ] [gamma |-  L[..]]
 ;
 
-rec existsEqV : Ctx_xaR [gamma] [psi] [psi |- #S[..]] -> {#p: [gamma |- tm]}
+rec existsEqV : Ctx_xaR [gamma] [psi] [psi |- #S[..]] -> {#p: [gamma |- # tm]}
                  ExistsEq [gamma] [psi] [psi |- #S[..]] [gamma |-  #p[..]] =
 fn cr_xa => mlam #p => let (cr_xa : Ctx_xaR [gamma] [psi] [psi |- #S[..] ] ) = cr_xa in
 case [gamma |-  #p[..]] of

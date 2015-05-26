@@ -26,11 +26,11 @@ and norm : tp -> type =
 schema ctx = neut T;
 
 inductive NeutVar : {g:ctx} [ |- tp] -> ctype =
-| NeutVar : {#p:[g |- neut T[]]} NeutVar [g] [ |- T]
+| NeutVar : {#p:[g |- # neut T[]]} NeutVar [g] [ |- T]
 ;
 
 inductive TmVar : {g:tctx} [ |- tp] -> ctype =
-| TmVar : {#p:[g |- tm T[]]} TmVar [g] [ |- T]
+| TmVar : {#p:[g |- # tm T[]]} TmVar [g] [ |- T]
 ;
 
 typedef Sub : {g:ctx} {h:ctx} ctype =
@@ -60,7 +60,7 @@ rec nsubst :  (g:ctx)(h:ctx)
            -> [g |- neut S[]]
            -> [h |- neut S[]] =
 fn s => fn e => case e of
-| {#p: [g |- neut T[]]}
+| {#p:[g |- # neut T[]]}
   [g |- #p[..] ] => let NeutVar [h |- #q[..]] = s [ |- T] (NeutVar [g |- #p[..] ]) in [h |- #q[..]]
 | {R:[g |- neut (arr T[] S[])]}
   [g |- rapp (R[..]) (N[..])] =>

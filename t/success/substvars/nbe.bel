@@ -20,7 +20,7 @@ embed : neut (atomic P) -> norm (atomic P).
 schema ctx = neut T;
 
 inductive TmVar : {g:tctx} [ |- tp] -> ctype =
-| TmVar : {#p:[g |- tm T[]]} TmVar [g] [ |- T]
+| TmVar : {#p:[g |- # tm T[]]} TmVar [g] [ |- T]
 ;
 stratified Sem : {g:ctx} [ |- tp] -> ctype =
 | Syn :  [g |- neut (atomic P[])] -> Sem [g] [ |- atomic P]

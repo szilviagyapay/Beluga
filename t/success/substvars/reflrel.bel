@@ -78,7 +78,7 @@ inductive Eq : {phi:xG}{psi:xaG}{#S: [psi |- phi]} [phi |- tm] -> [psi |- tm] ->
 
 
 rec ctx_member :
-          {#p: [phi  |-  tm] }
+          {#p: [phi  |- # tm] }
           Ctx_xaR [phi] [psi] [ psi |- #S[..] ] ->
           Eq [phi] [psi] [ psi |- #S[..] ]  [phi |- #p[..]] [psi |-  M[..]] ->
           [psi |-  aeq (M[..]) (M[..])] =

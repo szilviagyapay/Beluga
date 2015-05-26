@@ -23,11 +23,11 @@ nat : type.
 
 
 inductive NeutVar : {g:ctx} [ |- tp] -> ctype  =
-| NeutVar : {#p:[g |- neut T[]]} NeutVar [g] [ |- T]
+| NeutVar : {#p:[g |- # neut T[]]} NeutVar [g] [ |- T]
 ;
 
 inductive TmVar : {g:tctx} [ |- tp] -> ctype  =
-| TmVar : {#p:[g |- tm T[]]} TmVar [g] [ |- T]
+| TmVar : {#p:[g |- # tm T[]]} TmVar [g] [ |- T]
 ;
 
 

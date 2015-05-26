@@ -21,7 +21,7 @@ schema aCtx  = block x:term, _t:aeq x x;
 
 % Algorithmic Equality weakened contexts aCtx
 inductive Aeq' : (g:aCtx) [g |- term] -> [g |- term] -> ctype =
-| Ae_v' : % {#p:[g |- block (x:term, u:aeq x x)]}
+| Ae_v' : % {#p:[g |- # block (x:term, u:aeq x x)]}
              Aeq' [g |- #p.1[..]] [g |- #p.1[..]]
 | Ae_a' : Aeq' [g |- E1[..]] [g |- F1[..] ] -> Aeq' [g |- E2[..]] [g |- F2[..]]
     -> Aeq' [g |- app E1 E2] [g |- app F1 F2]
@@ -32,7 +32,7 @@ inductive Aeq' : (g:aCtx) [g |- term] -> [g |- term] -> ctype =
 
 % Algorithmic Equality in context tctx
 inductive Aeq : (g:tctx) [g |- term] -> [g |- term] -> ctype   =
-| Ae_v : % {#p:[g |- term]}
+| Ae_v : % {#p:[g |- # term]}
              Aeq [g |- #p] [g |- #p]
 | Ae_a : Aeq [g |- E1[..]] [g |- F1[..] ] -> Aeq [g |- E2[..]] [g |- F2[..]]
     -> Aeq [g |- app E1 E2] [g |- app F1 F2]
@@ -102,7 +102,7 @@ fn ae => case ae of
 inductive TRel : (g:tctx) (h:aCtx) [g |- term] -> [h |- term] -> ctype =
 | TRvar0 : {h: aCtx} TRel [g, x:term |-  x]
  		         [h, b:block (x:term, u:aeq x x) |- b.1]
-| TRvar  :   % {#p:[g |- term]}{#q:[h |- block x:term, u:aeq x x]}
+| TRvar  :   % {#p:[g |- # term]}{#q:[h |- # block x:term, u:aeq x x]}
                           TRel  [g |- #p[..]] [h |- #q.1[..]]
          -> TRel [g, x:term |-  #p[..]]
                 [h, b:block (x:term, u:aeq x x) |-  #q.1[..]]
